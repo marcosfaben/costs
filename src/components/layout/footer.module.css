@@ -1,0 +1,36 @@
+.footer{
+    color:white;
+    text-align: center;
+    background-color: #222;
+    padding: 3em;
+}
+
+.redessociais{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    list-style: none;
+}
+
+.redessociais li{
+    margin: 1em;
+}
+
+.redessociais svg{
+    font-size: 2em;
+    cursor: pointer;
+}
+
+.redessociais li:hover{
+    color: #ffdd33;
+}
+
+.texto{
+    font-weight: bold;
+}
+
+.texto span{
+    color: #ffdd33;
+}
+
+
