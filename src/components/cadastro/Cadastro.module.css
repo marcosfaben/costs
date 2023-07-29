@@ -1,0 +1,17 @@
+.cadastro{
+    width: 100%;
+    margin-top: 2em;
+    margin-left: 15em;
+    margin-right: 15em;
+    margin-bottom: 2em;
+}
+
+.cadastro h1{
+    margin-bottom: 0.3em;
+}
+
+.cadastro p{
+    color: #aaa;
+    margin-bottom: 1em;
+}
+

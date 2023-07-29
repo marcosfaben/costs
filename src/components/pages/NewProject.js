@@ -1,9 +1,12 @@
 import ProjectForm from '../project/ProjectForm';
 import styles from './NewProject.module.css'
 
+import { useNavigate } from "react-router-dom";
+
 const NewProject = () => {
 
     const enderecoProjetos = 'http://localhost:5000/projects'
+    const navegate = useNavigate()
 
         function createPost(project){
 
@@ -21,8 +24,8 @@ const NewProject = () => {
             }).then((resp)=>{
                 return resp.json()
             }).then((data)=>{
-                console.log(data)
-                //depois de inserir um novo projeto vamos redirecionar
+                //redirecionar para a página de projetos
+                navegate('/projects', {message: 'Projeto criado com sucesso!'})
             }).catch((err)=>{
                 return console.log(err)
             })
