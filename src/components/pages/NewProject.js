@@ -25,8 +25,9 @@ const NewProject = () => {
                 return resp.json()
             }).then((data)=>{
                 //redirecionar para a página de projetos
-                navegate('/projects', {message: 'Projeto criado com sucesso!'})
+                navegate('/projects', {state: {message: 'Projeto criado com sucesso!', type: "sucess"}})
             }).catch((err)=>{
+                navegate('/projects', {state: {message: 'Erro ao criar o projeto', type:"error"}})
                 return console.log(err)
             })
         }
