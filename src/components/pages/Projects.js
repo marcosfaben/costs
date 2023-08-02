@@ -7,6 +7,8 @@ import Conteiner from "../layout/Conteiner";
 
 import ProjectCard from "../project/ProjectCard";
 
+import Loading from '../layout/Loading'
+
 const Projects = () => {
 
     const location = useLocation()
@@ -19,9 +21,9 @@ const Projects = () => {
 
     const [projetos, setProjetos] = useState([])
 
-    useEffect(()=>{
+    const bdprojetos = 'http://localhost:5000/projects'
 
-        const bdprojetos = 'http://localhost:5000/projects'
+    useEffect(()=>{
 
         fetch(bdprojetos, {
             method: "GET",
@@ -31,12 +33,30 @@ const Projects = () => {
         }).then(resp => resp.json())
         .then((data)=>{
             setProjetos(data)
+            setRemoveLoading(true)
         })
         .catch((err)=>console.log("Erro ao conectar com o banco de dados: " + err))  
     }, [])
-   
 
-    
+    const [msgRemove, setMsgRemove] = useState('')
+    const [typeRemove, setTypeRemove] = useState('')
+   
+    function removeProject(id){
+        fetch(`http://localhost:5000/projects/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then((res)=>res.json())
+        .then(()=>{
+            setProjetos(projetos.filter((project) => project.id !== id))
+            setMsgRemove('Projeto removido com sucesso!')
+            setTypeRemove('sucess')
+        })
+        .catch((err) => console.log("Erro ao tentar remover projeto: "+err))
+    }
+
+    const [removeLoading, setRemoveLoading] = useState(false)
     
     return(
         <div className={styles.project_Container}>
@@ -50,6 +70,9 @@ const Projects = () => {
                 <Message msg={message} type={type} />
             )}
 
+            {msgRemove && (
+                    <Message msg={msgRemove} type={typeRemove} />
+            )}
 
             <Conteiner customClass="start">
 
@@ -60,13 +83,18 @@ const Projects = () => {
                             name={projeto.name}
                             budget={projeto.budget}
                             category={projeto.category.name}
-
+                            handleRemove={removeProject}
                             key={projeto.id}
                             />)
-                    }
-                        
-                    )
-                )}                
+                    }))}
+
+                {!removeLoading && (
+                    <Loading/>
+                )}
+
+                {removeLoading && projetos.length===0 && (
+                    <p>Não há projetos cadastrados!</p>
+                )}              
 
             </Conteiner>
 

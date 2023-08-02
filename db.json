@@ -74,5 +74,13 @@
       "name": "Planejamento"
     }
   ],
-  "company": []
+  "company": [
+    {
+      "name": "Empresa 1",
+      "cnpj": "123",
+      "email": "empresa1@email.com",
+      "password": "123",
+      "id": 1
+    }
+  ]
 }

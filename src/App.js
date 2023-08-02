@@ -9,8 +9,9 @@ import Conteiner from './components/layout/Conteiner';
 import NavBar from './components/layout/navbar';
 import Footer from './components/layout/footer';
 import Projects from './components/pages/Projects';
+import Project from './components/pages/Project';
 
-import Login from './components/loginEmpresa/Login'
+import Login from './components/loginEmpresa/Login';
 
 function App() {
   return (
@@ -28,7 +29,8 @@ function App() {
             <Route path="/contact" element={<Contact/>}/>
             <Route path="/newproject" element={<NewProject/>}/>
             <Route path="/cadastro" element={<Cadastro/>}/>
-            <Route path="login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/project/:id" element={<Project />} />
 
           </Routes>
         </Conteiner>

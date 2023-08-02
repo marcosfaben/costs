@@ -1,7 +1,9 @@
 import Input from "../form/Input";
 import SubmitButton from "../form/SubmitButton";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, useLocation } from "react-router-dom";
+import Message from "../layout/Message";
 
 import styles from './Login.module.css';
 
@@ -10,17 +12,27 @@ export default function Login(){
     const [empresas, setEmpresas] = useState({})
     const [login, setLogin] = useState([])
     const navigate = useNavigate();
+    
+    let msg = ''
+    let type = ''
+    const location = useLocation()
+    if(location.state){
+        msg = location.state.msg
+        type = location.state.type
+    }
 
     useEffect(()=>{
         fetch("http://localhost:5000/company", {
             method: "GET",
             headers: {
-                'Content-type': 'application/json'
+                'Content-Type': 'application/json'
             }
-        }).then((data) => data.json())
+        })
+        .then((data) => data.json())
         .then((data) => {
             setEmpresas(data)
         })
+        .catch(err=> console.log('Erro ao conectar com o banco de dados das empresas: ' + err))
     }, [])
     
     function handleOnChange(e){
@@ -28,35 +40,44 @@ export default function Login(){
     }
     
     function buscarEmpresa(e){
-        var resp = "";
+        var resp = false;
         e.preventDefault();
-        const a = empresas.map((empresa) => {
+        empresas.map((empresa) => {
             if(empresa.cnpj === login.cnpj && empresa.password === login.password){
-                resp = "Achou a empresa"
+                resp = true
             }
         })
-        console.log(resp + " " + a)
-        navigate('/')
+        if(resp){
+            navigate('/')
+        }
+        
     }
 
     return (
-        <form className={styles.login} onSubmit={buscarEmpresa}>
-            <Input
-                text="Insira o CNPJ da empresa"
-                type="text"
-                placeholder="Insira o CNPJ"
-                name="cpnj"
-                handleOnChange={handleOnChange}
-            />
-            <Input
-                text="Insira a senha"
-                type="password"
-                placeholder="Insira a senha"
-                name="password"
-                handleOnChange={handleOnChange}
-            />
-            <SubmitButton text="Entrar"/>
-                
-        </form>
+        <>
+
+            {msg && (
+                <Message msg={msg} type={type}/>
+            )}
+
+            <form className={styles.login} onSubmit={buscarEmpresa}>
+                <Input
+                    text="Insira o CNPJ da empresa"
+                    type="text"
+                    placeholder="Insira o CNPJ"
+                    name="cnpj"
+                    handleOnChange={handleOnChange}
+                />
+                <Input
+                    text="Insira a senha"
+                    type="password"
+                    placeholder="Insira a senha"
+                    name="password"
+                    handleOnChange={handleOnChange}
+                />
+                <SubmitButton text="Entrar"/>
+                    
+            </form>
+        </>
     )
 }

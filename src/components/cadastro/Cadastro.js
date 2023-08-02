@@ -2,11 +2,14 @@ import Input from "../form/Input";
 import SubmitButton from "../form/SubmitButton";
 import styles from './Cadastro.module.css'
 
+import { useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 
 function Cadastro(){
 
     const [company, setCompany] = useState([])
+    const navigate = useNavigate()
 
     function postCompany(company){
         const dadosEmpresa = 'http://localhost:5000/company'
@@ -19,8 +22,8 @@ function Cadastro(){
             body: JSON.stringify(company)
         }
         ).then(data => data.json()
-        ).then((data) => {
-            console.log(data)
+        ).then(() => {
+            navigate('/login', {state:{msg: 'Cadastro realizado com sucesso!', type: 'sucess'}})
         })
         .catch((err) => console.log("Erro para conectar com o bd de empresa: " + err))
 
