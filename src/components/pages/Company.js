@@ -1,7 +1,16 @@
-function Company(){
+function Company({id, name, email, deleteCompany}){
+
+    const remove = (e) => {
+        e.preventDefault()
+        deleteCompany(id)
+    }
+
     return(
         <div>
-            <h1>Company</h1>
+            <p>{id}</p>
+            <p>{name}</p>
+            <p>{email}</p>
+            <button onClick={remove}>Excluir</button>
         </div>
     )
 }
