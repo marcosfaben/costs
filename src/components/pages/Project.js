@@ -1,11 +1,17 @@
+import {parse, v4 as uuid} from 'uuid' 
+
 import { useEffect, useState } from 'react';
 import styles from './Project.module.css'
 
 //usar o hook useParams para pegar o id passado na url
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Loading from '../layout/Loading';
 import Conteiner from '../layout/Conteiner';
+import ProjectForm from '../project/ProjectForm';
+import Message from '../layout/Message';
+//import ServiceForm from '../service/ServiceForm';
+import ServiceForm from '../service/ServiceForm'
 
 function Project(){
 
@@ -14,6 +20,10 @@ function Project(){
     const[project, setProject] = useState({})
 
     const [showProjectForm, setShowProjectForm] = useState(false)
+    const [showServices, setShowServices] = useState(false)
+
+    const [msg, setMsg] = useState('')
+    const [typeMsg, setTypeMsg] = useState('')
 
     useEffect(()=>{
         fetch(`http://localhost:5000/projects/${id}`,{
@@ -31,16 +41,68 @@ function Project(){
     }, [id])
 
     function toggleProjectForm(){
-        console.log(showProjectForm)
         setShowProjectForm(!showProjectForm)
     }
-    
+
+    function toggleServices(){
+        setShowServices(!showServices)
+    }
+
+
+    function editPost(project){
+        setMsg('')
+
+        if(project.budget < project.cost){
+            setMsg('O orçamento não pode ser menor que os custos do projeto!')
+            setTypeMsg('error')
+            return false
+        }
+
+        fetch(`http://localhost:5000/projects/${project.id}`,{
+            method: "PATCH",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(project)
+        })
+        .then((resp)=>resp.json())
+        .then((data)=>{
+            setProject(data)
+            setShowProjectForm(false)
+            setMsg('Projeto atualizado!')
+            setTypeMsg('sucess')
+        })
+        .catch((err)=>{
+            console.log('Erro ao atualizar o projeto: ' + err)
+            setMsg('Erro na atualização!')
+            setTypeMsg('error')
+        })
+       console.log(project)
+    }
+
+    function insertServices(project){
+        //const sumCost = project.service.reduce((a, b)=>a+project.service.budget)
+        //console.log(sumCost)
+        
+        const lastService = project.service[project.service.length - 1]
+
+        lastService.id = uuid()
+        
+        const lastServiceCost = lastService.cost
+
+        console.log(parseFloat(lastServiceCost))
+    }
 
     return(
         <>
             {project.name ? (
                     <div className={styles.project_details}>
                         <Conteiner customClass="column">
+
+                            {msg && (
+                                <Message msg={msg} type={typeMsg} />    
+                            )}
+
                             <div className={styles.details_container}>
                                 <h1>Projeto: {project.name}</h1>
                                 <button className={styles.btn} onClick={toggleProjectForm}>
@@ -61,9 +123,25 @@ function Project(){
                                 ) : (
                                     
                                     <div className={styles.project_info}>
-                                        <p>Detalhes do projeto</p>
+                                        <ProjectForm handleSubmit={editPost} btnText="Atualizar projeto" projectData={project}/>
                                     </div>
                                 )}
+                            </div>
+                            <div className={styles.service_form_container}>
+                                    <h2>Adicione um serviço:</h2>
+                                    <button className={styles.btn} onClick={toggleServices}>
+                                        {showServices ? 'Fechar serviço' : 'Adicionar'}
+                                    </button>
+                                    <div className={styles.project_info}>
+                                        {showServices ? (
+                                            <>
+                                                <p>Aqui vai os serviços</p>
+                                                <ServiceForm onSubmit={insertServices} projectData={project}/>
+                                            </>
+                                        ): (
+                                            <></>
+                                        )}
+                                    </div>
                             </div>
                         </Conteiner>
                     </div>

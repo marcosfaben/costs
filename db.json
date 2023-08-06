@@ -1,8 +1,8 @@
 {
   "projects": [
     {
-      "name": "Nutri",
-      "budget": "50000",
+      "name": "Tabela de nutricional",
+      "budget": "75000",
       "category": {
         "id": "2",
         "name": "Desenvolvimento"
@@ -13,7 +13,7 @@
     },
     {
       "name": "Engenharia",
-      "budget": "200000",
+      "budget": "17.500",
       "category": {
         "id": "3",
         "name": "Design"

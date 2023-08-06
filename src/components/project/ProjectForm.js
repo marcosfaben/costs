@@ -4,10 +4,10 @@ import Select from '../form/Select';
 import SubmitButton from '../form/SubmitButton';
 
 import { useState, useEffect } from 'react';
-import { FaChessKnight } from 'react-icons/fa';
+//import { FaChessKnight } from 'react-icons/fa';
 
 
-function ProjectForm({btnText, post}){
+function ProjectForm({handleSubmit, btnText, projectData}){
 
     const [categories, setCategories] = useState([]);
 
@@ -32,12 +32,12 @@ function ProjectForm({btnText, post}){
 
 
 
-        const [project, setProject] = useState({})
+        const [project, setProject] = useState(projectData || {})
 
         const submit = (e) => {
             e.preventDefault()
             //handleSubmit(project)
-            post(project)
+            handleSubmit(project)
         }
 
         function handleOnChange(e){
@@ -64,6 +64,7 @@ function ProjectForm({btnText, post}){
                 name="name"
                 placeholder="Insira o nome do projeto"
                 handleOnChange={handleOnChange}
+                value={project.name ? project.name: ''}
             />
             <Input 
                 type="number"
@@ -71,6 +72,7 @@ function ProjectForm({btnText, post}){
                 name="budget"
                 placeholder="Insira o orçamento total"
                 handleOnChange={handleOnChange}
+                value={project.budget ? project.budget : ''}
             />
             
             
