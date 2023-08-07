@@ -13,12 +13,12 @@
     },
     {
       "name": "Engenharia",
-      "budget": "17.500",
+      "budget": "17500",
       "category": {
         "id": "3",
         "name": "Design"
       },
-      "cost": 0,
+      "cost": 1009,
       "services": [],
       "id": 2
     },

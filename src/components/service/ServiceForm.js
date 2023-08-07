@@ -4,23 +4,18 @@ import { useState } from "react";
 
 import styles from '../project/ProjectForm.module.css'
 
-function ServiceForm(handleOnSubmit, projectData){
+function ServiceForm({handleOnSubmit, projectData}){
 
     const [service, setService] = useState({})
 
-    const [project, setProject] = useState(projectData)
-
-    console.log(project)
     function handleOnChange(e){
         setService({...service, [e.target.name]: e.target.value})
     }
 
     function submit(e){
         e.preventDefault()
-        //projectData.services.push(service)
-        console.log(service)
-        console.log(projectData)
-        /*handleOnSubmit(projectData)*/
+        projectData.services.push(service)
+        handleOnSubmit(projectData)
     }
 
     return(
@@ -35,7 +30,7 @@ function ServiceForm(handleOnSubmit, projectData){
             <Input
                 type="number"
                 text="Custo do serviço"
-                name="budget"
+                name="cost"
                 placeholder="500"
                 handleOnChange={handleOnChange}
             />
