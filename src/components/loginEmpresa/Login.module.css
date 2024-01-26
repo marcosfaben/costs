@@ -14,3 +14,9 @@
     color: #aaa;
     margin-bottom: 1em;
 }
+
+.botao{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

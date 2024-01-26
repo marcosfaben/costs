@@ -7,6 +7,8 @@ import Message from "../layout/Message";
 
 import styles from './Login.module.css';
 
+import LinkButton from "../layout/LinkButton";
+
 export default function Login(){
 
     const [empresas, setEmpresas] = useState({})
@@ -48,7 +50,7 @@ export default function Login(){
             }
         })
         if(resp){
-            navigate('/')
+            navigate('/home')
         }
         
     }
@@ -75,8 +77,10 @@ export default function Login(){
                     name="password"
                     handleOnChange={handleOnChange}
                 />
-                <SubmitButton text="Entrar"/>
-                    
+                <div className={styles.botao}>
+                    <SubmitButton text="Entrar"/>
+                    <LinkButton to="/cadastro" texto="Cadastrar"/>
+                </div>  
             </form>
         </>
     )

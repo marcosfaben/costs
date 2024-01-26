@@ -1,10 +1,11 @@
 .button{
-    padding: 0.5em 1em;
     background-color: #222;
     color: white;
-    font-size: 17px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    border: none;
+    font-size: 14px;
     text-decoration: none;
-    margin: 10px;
 }
 
 .button:hover{
