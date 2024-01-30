@@ -12,7 +12,7 @@ function Cadastro(){
     const navigate = useNavigate()
 
     function postCompany(company){
-        const dadosEmpresa = 'http://localhost:5000/company'
+        const dadosEmpresa = 'http://localhost:5000/user'
 
         fetch(dadosEmpresa, {
             method: "POST",
@@ -25,7 +25,7 @@ function Cadastro(){
         ).then(() => {
             navigate('/login', {state:{msg: 'Cadastro realizado com sucesso!', type: 'sucess'}})
         })
-        .catch((err) => console.log("Erro para conectar com o bd de empresa: " + err))
+        .catch((err) => console.log("Erro para conectar com o bd de usuarios: " + err))
 
     }
 
@@ -46,34 +46,34 @@ function Cadastro(){
             <p>Crie o cadastro para sua empresa</p>
             <Input 
                 type='text'
-                text='Insira o nome da empresa'
+                text='Insira seu nome'
                 placeholder='Insira o nome'
                 name='name'
                 handleOnChange={handleInput}
             />
             <Input 
                 type='number'
-                text='Insira o cnpj da empresa'
-                placeholder='Insira o cnpj'
+                text='Insira seu cpf'
+                placeholder='Insira o cpf'
                 name='cnpj'
                 handleOnChange={handleInput}
             />
             <Input 
                 type='email'
-                text='Insira o email da empresa'
+                text='Insira seu email'
                 placeholder='exemplo@email.com'
                 name='email'
                 handleOnChange={handleInput}
             />
             <Input 
                 type='password'
-                text='Insira a senha da empresa'
-                placeholder='Insira o senha'
+                text='Insira a senha'
+                placeholder='Insira a senha'
                 name='password'
                 handleOnChange={handleInput}
             />
             <SubmitButton
-                text='Cadastrar empresa'
+                text='Cadastrar usuario'
             />
         </form>
     )

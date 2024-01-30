@@ -11,7 +11,7 @@ import LinkButton from "../layout/LinkButton";
 
 export default function Login(){
 
-    const [empresas, setEmpresas] = useState({})
+    const [usuario, setUsuario] = useState({})
     const [login, setLogin] = useState([])
     const navigate = useNavigate();
     
@@ -24,28 +24,28 @@ export default function Login(){
     }
 
     useEffect(()=>{
-        fetch("http://localhost:5000/company", {
+        fetch("http://localhost:5000/user", {
             method: "GET",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/company'
             }
         })
         .then((data) => data.json())
         .then((data) => {
-            setEmpresas(data)
+            setUsuario(data)
         })
-        .catch(err=> console.log('Erro ao conectar com o banco de dados das empresas: ' + err))
+        .catch(err=> console.log('Erro ao conectar com o banco de dados de usuarios: ' + err))
     }, [])
     
     function handleOnChange(e){
         setLogin({...login, [e.target.name]: e.target.value})
     }
     
-    function buscarEmpresa(e){
+    function buscarUsuario(e){
         var resp = false;
         e.preventDefault();
-        empresas.map((empresa) => {
-            if(empresa.cnpj === login.cnpj && empresa.password === login.password){
+        usuauio.map((usuario) => {
+            if(usuario.cnpj === login.cnpj && usuario.password === login.password){
                 resp = true
             }
         })
@@ -62,11 +62,11 @@ export default function Login(){
                 <Message msg={msg} type={type}/>
             )}
 
-            <form className={styles.login} onSubmit={buscarEmpresa}>
+            <form className={styles.login} onSubmit={buscarUsuario}>
                 <Input
-                    text="Insira o CNPJ da empresa"
+                    text="Insira seu CPF"
                     type="text"
-                    placeholder="Insira o CNPJ"
+                    placeholder="Insira o CPF"
                     name="cnpj"
                     handleOnChange={handleOnChange}
                 />

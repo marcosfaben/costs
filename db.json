@@ -18,8 +18,15 @@
         "id": "1",
         "name": "Infra"
       },
-      "cost": 0,
-      "services": [],
+      "cost": 10000,
+      "services": [
+        {
+          "name": "Contratar funcionario",
+          "cost": "10000",
+          "description": "aaaaa",
+          "id": "7cde6544-0756-430d-b5c7-1981147875cd"
+        }
+      ],
       "id": "3"
     },
     {
@@ -54,6 +61,17 @@
       },
       "cost": 0,
       "services": []
+    },
+    {
+      "name": "1",
+      "budget": "1",
+      "category": {
+        "id": "1",
+        "name": "Infra"
+      },
+      "cost": 0,
+      "services": [],
+      "id": "o_gKpFy"
     }
   ],
   "categories": [
