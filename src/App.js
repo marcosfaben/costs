@@ -12,7 +12,7 @@ import Projects from './components/pages/Projects';
 import Project from './components/pages/Project';
 import Companies from './components/pages/Companies';
 
-import Login from './components/loginEmpresa/Login';
+import Login from './components/loginUsuario/Login';
 
 function App() {
   return (

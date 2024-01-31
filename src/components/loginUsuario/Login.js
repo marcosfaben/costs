@@ -27,7 +27,7 @@ export default function Login(){
         fetch("http://localhost:5000/user", {
             method: "GET",
             headers: {
-                'Content-Type': 'application/company'
+                'Content-Type': 'application/json'
             }
         })
         .then((data) => data.json())
@@ -44,10 +44,11 @@ export default function Login(){
     function buscarUsuario(e){
         var resp = false;
         e.preventDefault();
-        usuauio.map((usuario) => {
+        usuario.map((usuario) => {
             if(usuario.cnpj === login.cnpj && usuario.password === login.password){
                 resp = true
             }
+            return resp
         })
         if(resp){
             navigate('/home')
@@ -67,7 +68,7 @@ export default function Login(){
                     text="Insira seu CPF"
                     type="text"
                     placeholder="Insira o CPF"
-                    name="cnpj"
+                    name="cpf"
                     handleOnChange={handleOnChange}
                 />
                 <Input

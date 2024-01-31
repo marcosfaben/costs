@@ -128,5 +128,21 @@
       "password": "789",
       "id": "5i0EVhi"
     }
+  ],
+  "user": [
+    {
+      "name": "123",
+      "cpf": "123",
+      "email": "e@e.com",
+      "password": "123",
+      "id": 1
+    },
+    {
+      "name": "234",
+      "cpf": "234",
+      "email": "e@e.com",
+      "password": "2234",
+      "id": 2
+    }
   ]
 }

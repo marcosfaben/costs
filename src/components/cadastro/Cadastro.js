@@ -8,10 +8,10 @@ import { useState } from "react";
 
 function Cadastro(){
 
-    const [company, setCompany] = useState([])
+    const [user, setUser] = useState([])
     const navigate = useNavigate()
 
-    function postCompany(company){
+    function postUser(user){
         const dadosEmpresa = 'http://localhost:5000/user'
 
         fetch(dadosEmpresa, {
@@ -19,31 +19,31 @@ function Cadastro(){
             headers: {
                 'Content-type': 'application/json'
             },
-            body: JSON.stringify(company)
+            body: JSON.stringify(user)
         }
         ).then(data => data.json()
         ).then(() => {
-            navigate('/login', {state:{msg: 'Cadastro realizado com sucesso!', type: 'sucess'}})
+            navigate('/', {state:{msg: 'Cadastro realizado com sucesso!', type: 'sucess'}})
         })
         .catch((err) => console.log("Erro para conectar com o bd de usuarios: " + err))
 
     }
 
     function handleInput(e){
-        setCompany({...company, [e.target.name]: e.target.value})
+        setUser({...user, [e.target.name]: e.target.value})
     }
 
     function submit(e){
         e.preventDefault()
-        postCompany(company)
+        postUser(user)
     }
     
     return(
 
 
         <form className={styles.cadastro} onSubmit={submit}>
-            <h1>Cadastre sua empresa</h1>
-            <p>Crie o cadastro para sua empresa</p>
+            <h1>Cadastre o Usuário</h1>
+            <p>Crie o cadastro para ser um usuário</p>
             <Input 
                 type='text'
                 text='Insira seu nome'
@@ -55,7 +55,7 @@ function Cadastro(){
                 type='number'
                 text='Insira seu cpf'
                 placeholder='Insira o cpf'
-                name='cnpj'
+                name='cpf'
                 handleOnChange={handleInput}
             />
             <Input 
