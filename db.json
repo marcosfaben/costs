@@ -7,8 +7,27 @@
         "id": "2",
         "name": "Desenvolvimento"
       },
-      "cost": 0,
-      "services": [],
+      "cost": 10001,
+      "services": [
+        {
+          "name": "Serviço 2",
+          "cost": "0",
+          "description": "Serviço 2",
+          "id": "559d4c7a-eaee-4494-bbdb-d17cf93f5d47"
+        },
+        {
+          "name": "Serviço 4",
+          "cost": "0",
+          "description": "Serviço 4",
+          "id": "0bcc3172-7712-424f-be20-cdbaef40948f"
+        },
+        {
+          "name": "Serviço 5",
+          "cost": "1",
+          "description": "Serviço 5",
+          "id": "16267fe2-2a8a-4b63-8d6c-7347fbd51263"
+        }
+      ],
       "id": "1"
     },
     {
@@ -18,13 +37,13 @@
         "id": "1",
         "name": "Infra"
       },
-      "cost": 10000,
+      "cost": 1,
       "services": [
         {
-          "name": "Contratar funcionario",
-          "cost": "10000",
-          "description": "aaaaa",
-          "id": "7cde6544-0756-430d-b5c7-1981147875cd"
+          "name": "Serviço 1",
+          "cost": "1",
+          "description": "Serviço 1",
+          "id": "dcf8d8da-3b96-48cc-92c5-cdf539577df5"
         }
       ],
       "id": "3"
@@ -36,8 +55,21 @@
       },
       "name": "Projeto de planejamento",
       "budget": "10000",
-      "cost": 0,
-      "services": [],
+      "cost": 3000,
+      "services": [
+        {
+          "name": "Serviço 1",
+          "cost": "1000",
+          "description": "Serviço 1",
+          "id": "fcffd4db-1d35-4855-a1ba-bf4de8fdeb5f"
+        },
+        {
+          "name": "Serviço 2",
+          "description": "Serviço 2",
+          "cost": "2000",
+          "id": "0a160541-e425-48f7-a1b6-6e76b904162e"
+        }
+      ],
       "id": "4"
     },
     {

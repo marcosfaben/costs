@@ -1,6 +1,6 @@
 import Input from "../form/Input";
 import SubmitButton from "../form/SubmitButton";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import Message from "../layout/Message";
@@ -11,9 +11,25 @@ import LinkButton from "../layout/LinkButton";
 
 export default function Login(){
 
-    const [usuario, setUsuario] = useState({})
+    const [usuarios, setUsuarios] = useState({})
     const [login, setLogin] = useState([])
     const navigate = useNavigate();
+
+    // const [state, dispatch] = useReducer(reducer, {
+    //     usuarios: {},
+    //     login: []
+    // })
+
+    // const reducer = (state, action) =>{
+    //     switch(action.type){
+    //         case 'setUsuarios':
+    //             return {...state, usuarios: state.usuarios}
+    //         case 'setLogin':
+    //             return {...state, login: state.login}
+    //         default :
+    //             return 'Esta ação não existe'
+    //     }
+    // }
     
     let msg = ''
     let type = ''
@@ -32,7 +48,7 @@ export default function Login(){
         })
         .then((data) => data.json())
         .then((data) => {
-            setUsuario(data)
+            setUsuarios(data)
         })
         .catch(err=> console.log('Erro ao conectar com o banco de dados de usuarios: ' + err))
     }, [])
@@ -44,7 +60,7 @@ export default function Login(){
     function buscarUsuario(e){
         var resp = false;
         e.preventDefault();
-        usuario.map((usuario) => {
+        usuarios.map((usuario) => {
             if(usuario.cnpj === login.cnpj && usuario.password === login.password){
                 resp = true
             }
