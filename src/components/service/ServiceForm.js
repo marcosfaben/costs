@@ -17,7 +17,7 @@ function ServiceForm({handleOnSubmit, projectData}){
         projectData.services.push(service)
         handleOnSubmit(projectData)
     }
-
+    
     return(
         <form className={styles.form} onSubmit={submit}>
             <Input

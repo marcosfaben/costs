@@ -2,30 +2,24 @@
   "projects": [
     {
       "name": "Tabela de nutricional",
-      "budget": "75000",
+      "budget": "750000",
       "category": {
         "id": "2",
         "name": "Desenvolvimento"
       },
-      "cost": 10001,
+      "cost": 1300,
       "services": [
         {
-          "name": "Serviço 2",
-          "cost": "0",
+          "name": "Serviço 1",
+          "cost": "1000",
+          "description": "Serviço 1",
+          "id": "0759e41c-c667-4955-ace7-0741d9cbadc0"
+        },
+        {
+          "name": "Serviço 3",
+          "cost": "100",
           "description": "Serviço 2",
-          "id": "559d4c7a-eaee-4494-bbdb-d17cf93f5d47"
-        },
-        {
-          "name": "Serviço 4",
-          "cost": "0",
-          "description": "Serviço 4",
-          "id": "0bcc3172-7712-424f-be20-cdbaef40948f"
-        },
-        {
-          "name": "Serviço 5",
-          "cost": "1",
-          "description": "Serviço 5",
-          "id": "16267fe2-2a8a-4b63-8d6c-7347fbd51263"
+          "id": "dfb23e59-05a3-4f26-bb52-936e98f021e2"
         }
       ],
       "id": "1"
@@ -38,14 +32,7 @@
         "name": "Infra"
       },
       "cost": 1,
-      "services": [
-        {
-          "name": "Serviço 1",
-          "cost": "1",
-          "description": "Serviço 1",
-          "id": "dcf8d8da-3b96-48cc-92c5-cdf539577df5"
-        }
-      ],
+      "services": [],
       "id": "3"
     },
     {

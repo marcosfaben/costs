@@ -1,6 +1,6 @@
 import Input from "../form/Input";
 import SubmitButton from "../form/SubmitButton";
-import { useState, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import Message from "../layout/Message";
@@ -10,27 +10,25 @@ import styles from './Login.module.css';
 import LinkButton from "../layout/LinkButton";
 
 export default function Login(){
-
-    const [usuarios, setUsuarios] = useState({})
-    const [login, setLogin] = useState([])
     const navigate = useNavigate();
 
-    // const [state, dispatch] = useReducer(reducer, {
-    //     usuarios: {},
-    //     login: []
-    // })
-
-    // const reducer = (state, action) =>{
-    //     switch(action.type){
-    //         case 'setUsuarios':
-    //             return {...state, usuarios: state.usuarios}
-    //         case 'setLogin':
-    //             return {...state, login: state.login}
-    //         default :
-    //             return 'Esta ação não existe'
-    //     }
-    // }
+    const reducer = (state, action) =>{
+        switch(action.type){
+            case 'setUsuarios':
+                return {...state, usuarios: action.payload}
+            case 'setLogin':
+                return {...state, login: action.payload}
+            default :
+                return 'Esta ação não existe'
+        }
+    }
     
+    const [state, dispatch] = useReducer(reducer, {
+        usuarios: {},
+        login: []
+    })
+
+
     let msg = ''
     let type = ''
     const location = useLocation()
@@ -48,24 +46,25 @@ export default function Login(){
         })
         .then((data) => data.json())
         .then((data) => {
-            setUsuarios(data)
+            dispatch({type:'setUsuarios', payload: data})
         })
         .catch(err=> console.log('Erro ao conectar com o banco de dados de usuarios: ' + err))
     }, [])
     
     function handleOnChange(e){
-        setLogin({...login, [e.target.name]: e.target.value})
+        dispatch({type: 'setLogin', payload: {...state.login, [e.target.name]: e.target.value}})
     }
     
     function buscarUsuario(e){
         var resp = false;
         e.preventDefault();
-        usuarios.map((usuario) => {
-            if(usuario.cnpj === login.cnpj && usuario.password === login.password){
+        state.usuarios.map((usuario) => {
+            if(usuario.cnpj === state.login.cnpj && usuario.password === state.login.password){
                 resp = true
             }
             return resp
         })
+
         if(resp){
             navigate('/home')
         }

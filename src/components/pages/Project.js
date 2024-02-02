@@ -1,6 +1,6 @@
 import {parse, v4 as uuid} from 'uuid' 
 
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import styles from './Project.module.css'
 
 //usar o hook useParams para pegar o id passado na url
@@ -16,11 +16,6 @@ import ServiceCard from '../service/ServiceCard';
 function Project(){
 
     const {id} = useParams()
-
-    // const[project, setProject] = useState({})
-
-    // const [services, setServices] = useState([])
-
     
     const reducer = (state, action) => {
         switch(action.type){
@@ -58,8 +53,6 @@ function Project(){
             }
         }).then((resp)=>resp.json())
         .then((data)=>{
-            // setProject(data)
-            // setServices(data.services)
             dispatch({type: 'setProject', payload: data})
             dispatch({type: 'setServices', payload: data.services})
         })
@@ -69,12 +62,9 @@ function Project(){
     }, [id])
 
     function editPost(project){
-        // setMsg('')
         dispatch({type: 'setMsg', payload: ''})
 
         if(project.budget < project.cost){
-            // setMsg('O orçamento não pode ser menor que os custos do projeto!')
-            // setTypeMsg('error')
             dispatch({type: 'setMsg', payload: 'O orçamento não pode ser menor que os custos do projeto!'})
             dispatch({type: 'setTypeMsg', payload: 'error'})
             return false
@@ -83,14 +73,14 @@ function Project(){
         fetch(`http://localhost:5000/projects/${project.id}`,{
             method: "PATCH",
             headers: {
-                'Content-type': 'applicationservices/json'
+                'Content-type': 'application/json'
             },
             body: JSON.stringify(project)
         })
         .then((resp)=>resp.json())
         .then((data)=>{
             //setProject(data)
-            dispatch({action: 'setProject', payload: data})
+            dispatch({action: 'setProject', payload: project})
             dispatch({type: 'setShowProjectForm'})
             dispatch({type: 'setMsg', payload: 'Projeto atualizado!'})
             dispatch({type: 'setTypeMsg', payload: 'sucess'})
@@ -100,7 +90,6 @@ function Project(){
             dispatch({type: 'setMsg', payload: 'Erro na atualização!'})
             dispatch({type: 'setTypeMsg', payload: 'error'})
         })
-       console.log(project)
     }
 
     function insertServices(project){
@@ -130,7 +119,7 @@ function Project(){
             },
             body: JSON.stringify(project)
         }).then((resp)=>resp.json())
-        .then((data)=> dispatch({action: 'setServices', payload: data})/*setServices(data.services)*/)
+        .then((data)=> dispatch({action: 'setServices', payload: data.services})/*setServices(data.services)*/)
         .catch((err)=>console.log("Erro na atualização dos serviços do projeto" + err))
 
     }
@@ -163,7 +152,8 @@ function Project(){
 
     return(
         <>
-            {state.project.name ? (
+        {console.log(state.project)}
+            {typeof(state.project.name) != "undefined"? (
                     <div className={styles.project_details}>
                         <Conteiner customClass="column">
 
@@ -172,14 +162,14 @@ function Project(){
                             )}
 
                             <div className={styles.details_container}>
-                                <h1>Projeto: {state.project.name}</h1>
+                            <h1>Projeto: {state.project.name}</h1>
                                 <button className={styles.btn} onClick={()=>{dispatch({type: 'setShowProjectForm'})}}>
                                     {state.showProjectForm ? 'Fechar projeto' : 'Editar projeto'}
                                 </button>
                                 {!state.showProjectForm ? (
                                     <div className={styles.project_info}>
                                         <p>
-                                            <span>Categoria:</span> {state.project.category.name}
+                                        <span>Categoria:</span> {state.project.category.name}
                                         </p>
                                         <p>
                                             <span>Total de Orçamento:</span> R${state.project.budget}
@@ -230,6 +220,7 @@ function Project(){
                                             />
                                     ))
                                 }
+
                             </div>
                         </Conteiner>
                     </div>
