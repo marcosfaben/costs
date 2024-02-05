@@ -9,25 +9,27 @@ import styles from './Login.module.css';
 
 import LinkButton from "../layout/LinkButton";
 
+import { useSelector, useDispatch} from "react-redux";
+import UserActionTypes from "../../redux/user/actionTypes";
+import rootReducer from "../../redux/root-reducer";
+
 export default function Login(){
+    const {users} = useSelector(rootReducer=>rootReducer.useReducer)
+
     const navigate = useNavigate();
 
     const reducer = (state, action) =>{
         switch(action.type){
-            case 'setUsuarios':
-                return {...state, usuarios: action.payload}
             case 'setLogin':
-                return {...state, login: action.payload}
-            default :
-                return 'Esta ação não existe'
+                return { ...state, login: action.payload }
         }
     }
     
-    const [state, dispatch] = useReducer(reducer, {
-        usuarios: {},
+    const [state, set] = useReducer(reducer, {
         login: []
     })
 
+    const dispatch = useDispatch()
 
     let msg = ''
     let type = ''
@@ -46,21 +48,25 @@ export default function Login(){
         })
         .then((data) => data.json())
         .then((data) => {
-            dispatch({type:'setUsuarios', payload: data})
+            dispatch({type: UserActionTypes.USERS, payload: data})
         })
         .catch(err=> console.log('Erro ao conectar com o banco de dados de usuarios: ' + err))
     }, [])
     
     function handleOnChange(e){
-        dispatch({type: 'setLogin', payload: {...state.login, [e.target.name]: e.target.value}})
+        set({type: 'setLogin', payload: {...state.login, [e.target.name]: e.target.value}})
     }
+    
     
     function buscarUsuario(e){
         var resp = false;
         e.preventDefault();
-        state.usuarios.map((usuario) => {
+
+
+        users.map((usuario) => {
             if(usuario.cnpj === state.login.cnpj && usuario.password === state.login.password){
                 resp = true
+                dispatch({type: UserActionTypes.LOGIN, payload: usuario})
             }
             return resp
         })

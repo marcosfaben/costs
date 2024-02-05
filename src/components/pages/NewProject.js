@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import ProjectForm from '../project/ProjectForm';
 import styles from './NewProject.module.css'
 
@@ -7,6 +8,7 @@ const NewProject = () => {
 
     const enderecoProjetos = 'http://localhost:5000/projects'
     const navegate = useNavigate()
+    const {currentUser} = useSelector(rootReducer => rootReducer.useReducer)
 
         function createPost(project){
 
@@ -14,6 +16,7 @@ const NewProject = () => {
 
             project.cost = 0
             project.services = []
+            project.idUser = currentUser.cpf
 
             fetch(enderecoProjetos, {
                 method: "POST",

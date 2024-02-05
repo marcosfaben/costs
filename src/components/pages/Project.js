@@ -37,7 +37,7 @@ function Project(){
     }
 
     const [state, dispatch] = useReducer((state, action)=>reducer(state, action), {
-        project: {},
+        project: null,
         services: [],
         showProjectForm: false,
         showServices: false,
@@ -59,7 +59,7 @@ function Project(){
         .catch((err)=>{
             console.log("Erro ao puxar dados do banco de projetos: " + err)
         })
-    }, [id])
+    }, [id, state])
 
     function editPost(project){
         dispatch({type: 'setMsg', payload: ''})
@@ -119,7 +119,7 @@ function Project(){
             },
             body: JSON.stringify(project)
         }).then((resp)=>resp.json())
-        .then((data)=> dispatch({action: 'setServices', payload: data.services})/*setServices(data.services)*/)
+        .then((data)=> dispatch({action: 'setServices', payload: data.service})/*setServices(data.services)*/)
         .catch((err)=>console.log("Erro na atualização dos serviços do projeto" + err))
 
     }
@@ -129,7 +129,9 @@ function Project(){
        let proj = state.project
 
        proj.services = proj.services.filter((service)=> service.id !== idService)
-
+       
+       proj.cost = proj.services.reduce((a, b)=>a+parseFloat(b.cost), 0)
+       
        fetch(`http://localhost:5000/projects/${idProject}`,{
             method:"PATCH",
             headers: {
@@ -152,8 +154,7 @@ function Project(){
 
     return(
         <>
-        {console.log(state.project)}
-            {typeof(state.project.name) != "undefined"? (
+            {state.project ? (
                     <div className={styles.project_details}>
                         <Conteiner customClass="column">
 
