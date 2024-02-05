@@ -74,6 +74,7 @@
       "cpf": "123",
       "email": "e@e.com",
       "password": "123",
+      "adm": true,
       "id": 1
     },
     {
@@ -81,7 +82,16 @@
       "cpf": "234",
       "email": "e@e.com",
       "password": "2234",
+      "adm": false,
       "id": 2
+    },
+    {
+      "name": "345",
+      "cpf": "345",
+      "email": "345@e.com",
+      "password": "345",
+      "adm": false,
+      "id": 3
     }
   ]
 }

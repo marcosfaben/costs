@@ -5,37 +5,53 @@ import styles from './Cadastro.module.css'
 import { useNavigate } from "react-router-dom";
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import rootReducer from "../../redux/root-reducer";
+
 
 function Cadastro(){
 
-    const [user, setUser] = useState([])
+    const [newUser, setNewUser] = useState([])
     const navigate = useNavigate()
+    const {users} = useSelector(rootReducer => rootReducer.useReducer)
 
     function postUser(user){
-        const dadosEmpresa = 'http://localhost:5000/user'
+        user.adm = false
+        let postar = true
 
-        fetch(dadosEmpresa, {
-            method: "POST",
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        }
-        ).then(data => data.json()
-        ).then(() => {
-            navigate('/', {state:{msg: 'Cadastro realizado com sucesso!', type: 'sucess'}})
+        users.map((user) => {
+            if(user.cpf === newUser.cpf){
+                console.log("Existe usuario com o CPF " + user.cpf)
+                postar = false
+            }
         })
-        .catch((err) => console.log("Erro para conectar com o bd de usuarios: " + err))
+
+        if(postar){
+            const dadosUsuario = 'http://localhost:5000/user'
+
+            fetch(dadosUsuario, {
+                method: "POST",
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            }
+            ).then(data => data.json()
+            ).then(() => {
+                navigate('/', { state: { msg: 'Cadastro realizado com sucesso!', type: 'sucess' } })
+            })
+                .catch((err) => console.log("Erro para conectar com o bd de usuarios: " + err))
+        }
 
     }
 
     function handleInput(e){
-        setUser({...user, [e.target.name]: e.target.value})
+        setNewUser({...newUser, [e.target.name]: e.target.value})
     }
 
     function submit(e){
         e.preventDefault()
-        postUser(user)
+        postUser(newUser)
     }
     
     return(
