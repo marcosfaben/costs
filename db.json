@@ -16,7 +16,7 @@
           "id": "6ee97120-afce-445f-9ded-bbe12a8a3e5b"
         }
       ],
-      "cpfUser": "123",
+      "idUser": "1",
       "id": "qKiAn6X"
     },
     {
@@ -35,8 +35,44 @@
           "id": "46468609-d9f3-49ba-bcfd-b7b5f2bc7d72"
         }
       ],
-      "cpfUser": "123",
+      "idUser": "2",
       "id": "BSGXAMc"
+    },
+    {
+      "name": "Projeto 7 fev user 345",
+      "budget": "1345",
+      "category": {
+        "id": "3",
+        "name": "Design"
+      },
+      "cost": 0,
+      "services": [],
+      "idUser": 3,
+      "id": "b9FI9VA"
+    },
+    {
+      "name": "Projeto(2) - 7 fev - user 345",
+      "budget": "789",
+      "category": {
+        "id": "1",
+        "name": "Infra"
+      },
+      "cost": 0,
+      "services": [],
+      "idUser": 3,
+      "id": "BWqIvWc"
+    },
+    {
+      "name": "Projeto(3) - 7 fev - user 345",
+      "budget": "888888",
+      "category": {
+        "id": "MQBLzYD",
+        "name": "Category 1"
+      },
+      "cost": 0,
+      "services": [],
+      "idUser": 3,
+      "id": "8Za38sd"
     }
   ],
   "categories": [

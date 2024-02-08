@@ -8,7 +8,7 @@ import styles from './Categories.module.css'
 import { useEffect, useState } from "react";
 import rootReducer from "../../redux/root-reducer";
 import categoryActionTypes from "../../redux/category/actionTypes";
-import CategoryCard from "../categoryCard/categoryCard";
+import CategoryCard from "../category/categoryCard";
 import Conteiner from "../layout/Conteiner";
 
 const Categories = () => {

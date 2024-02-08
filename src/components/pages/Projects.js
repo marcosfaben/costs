@@ -36,7 +36,6 @@ const Projects = () => {
             }
         }).then(resp => resp.json())
         .then((data)=>{
-            //setProjetos(data)
             dispatch({type: projectActionTypes.INSERT, payload:data})
             setRemoveLoading(true)
         })

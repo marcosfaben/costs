@@ -14,6 +14,7 @@ import Project from './components/pages/Project';
 import Login from './components/loginUsuario/Login';
 
 import Categories from './components/pages/Categories';
+import Users from './components/pages/Users';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/project/:id" element={<Project />} />
 
             <Route path="/category" element={<Categories />} />
+            <Route path="/users" element={<Users />} />
 
           </Routes>
         </Conteiner>
