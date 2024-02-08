@@ -16,7 +16,7 @@ const NewProject = () => {
 
             project.cost = 0
             project.services = []
-            project.idUser = currentUser.cpf
+            project.cpfUser = currentUser.cpf
 
             fetch(enderecoProjetos, {
                 method: "POST",

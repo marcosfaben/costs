@@ -4,8 +4,6 @@ import Select from '../form/Select';
 import SubmitButton from '../form/SubmitButton';
 
 import { useState, useEffect } from 'react';
-//import { FaChessKnight } from 'react-icons/fa';
-
 
 function ProjectForm({handleSubmit, btnText, projectData}){
 
@@ -36,14 +34,11 @@ function ProjectForm({handleSubmit, btnText, projectData}){
 
         const submit = (e) => {
             e.preventDefault()
-            //handleSubmit(project)
             handleSubmit(project)
         }
 
         function handleOnChange(e){
             setProject({...project, [e.target.name]: e.target.value})
-            //console.log(e.target.value)
-            //console.log(project)
         }
 
         function handleSelect(e){
@@ -51,9 +46,6 @@ function ProjectForm({handleSubmit, btnText, projectData}){
                 id: e.target.value,
                 name: e.target.options[e.target.selectedIndex].text
             }})
-            //console.log(e.target.value)
-            //console.log(e.target.options[e.target.selectedIndex].text)
-            //console.log(project)
         }
 
     return(

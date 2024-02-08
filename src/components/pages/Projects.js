@@ -9,20 +9,24 @@ import ProjectCard from "../project/ProjectCard";
 
 import Loading from '../layout/Loading'
 
+import { useSelector, useDispatch } from "react-redux";
+import rootReducer from "../../redux/root-reducer";
+import projectActionTypes from "../../redux/project/actionTypes";
+
 const Projects = () => {
 
     const location = useLocation()
     let message = ''
     let type = ''
+
+    const {projects} = useSelector(rootReducer=>rootReducer.projectReducer)
+    const dispatch = useDispatch()
+
     if(location.state){
         message = location.state.message
         type = location.state.type
     }
-
-    const [projetos, setProjetos] = useState([])
-
     const bdprojetos = 'http://localhost:5000/projects'
-
     useEffect(()=>{
 
         fetch(bdprojetos, {
@@ -32,7 +36,8 @@ const Projects = () => {
             }
         }).then(resp => resp.json())
         .then((data)=>{
-            setProjetos(data)
+            //setProjetos(data)
+            dispatch({type: projectActionTypes.INSERT, payload:data})
             setRemoveLoading(true)
         })
         .catch((err)=>console.log("Erro ao conectar com o banco de dados: " + err))  
@@ -49,7 +54,7 @@ const Projects = () => {
             },
         }).then((res)=>res.json())
         .then(()=>{
-            setProjetos(projetos.filter((project) => project.id !== id))
+            dispatch({type: projectActionTypes.DELET, payload: id})
             setMsgRemove('Projeto removido com sucesso!')
             setTypeRemove('sucess')
         })
@@ -76,8 +81,8 @@ const Projects = () => {
 
             <Conteiner customClass="start">
 
-                {projetos.length>0 && (
-                    projetos.map((projeto)=>{
+                {projects.length>0 && (
+                    projects.map((projeto)=>{
                         return (<ProjectCard
                             id={projeto.id}
                             name={projeto.name}
@@ -92,7 +97,7 @@ const Projects = () => {
                     <Loading/>
                 )}
 
-                {removeLoading && projetos.length===0 && (
+                {removeLoading && projects.length===0 && (
                     <p>Não há projetos cadastrados!</p>
                 )}              
 

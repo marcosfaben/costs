@@ -1,0 +1,32 @@
+.cadastro{
+    width: 30%;
+    margin-top: 2em;
+    margin-left: 27em;
+    margin-right: 27em;
+    margin-bottom: 2em;
+}
+
+.cadastro h1{
+    margin-bottom: 0.3em;
+}
+
+.cadastro p{
+    color: #aaa;
+    margin-bottom: 1em;
+}
+
+.btn{
+    padding: 0.5em 1em;
+    background-color: #222;
+    color: white;
+    font-size: 17px;
+    text-decoration: none;
+    margin: 10px;
+    cursor: pointer;
+    max-height: 40px;
+    border: none;
+}
+
+.btn:hover{
+    color:#ffbb33;
+}

@@ -11,7 +11,12 @@ const Home = ({user}) => {
 
     return(
         <section className={styles.home_conteiner}>
-            <h1>Bem-Vindo ao <span>Costs</span> {currentUser.name}</h1>
+            {currentUser ? (
+                <h1>Bem-Vindo ao <span>Costs</span> {currentUser.name}</h1>
+            ) : (
+                <h1>Bem-Vindo ao <span>Costs</span></h1>
+            )}
+            
             <p>Comece a gerenciar seus projetos agora mesmo!</p>
             <LinkButton to="/newproject" texto="Criar projeto"/>
             <img src={imagem_home} alt="imagem home" />

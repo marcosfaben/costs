@@ -22,23 +22,29 @@ function NavBar(){
         }
     }
 
-    console.log(currentUser)
-
     return(
         <nav className={styles.navbar}>
             <Conteiner>
                 <Link to="/"><img src={logo} alt="logo"/></Link>
                 <ul className={styles.list}>
-                <li className={styles.item}><Link to="/home">Home</Link></li>
-                <li className={styles.item}><Link to="/projects">Projetos</Link></li>
-                <li className={styles.item}><Link to="/company">Empresa</Link></li>
-                <li className={styles.item}><Link to="/contact">Contato</Link></li>
-                {!currentUser ? (
-                        <li className={styles.item} onClick={handleLoginClick}><Link to="/">Login</Link></li>
-                    ) : (
-                        <li className={styles.item} onClick={handleLoginClick}><Link to="/">Sair</Link></li>
-                    )
-                }
+                    <li className={styles.item}><Link to="/home">Home</Link></li>
+                    <li className={styles.item}><Link to="/projects">Projetos</Link></li>
+                    <li className={styles.item}><Link to="/company">Empresa</Link></li>
+                    <li className={styles.item}><Link to="/contact">Contato</Link></li>
+                    {!currentUser ? (
+                            <li className={styles.item} onClick={handleLoginClick}><Link to="/">Login</Link></li>
+                        ) : (
+                            <>
+                                {currentUser.adm ? (
+                                    <>
+                                        <li className={styles.item}><Link to="/users">Usuarios</Link></li>
+                                        <li className={styles.item}><Link to="/category">Categorias</Link></li>
+                                    </>
+                                ) : (<></>)}
+                                <li className={styles.item} onClick={handleLoginClick}><Link to="/">Sair</Link></li>
+                            </>
+                        )
+                    }
                 </ul>
             </Conteiner>
         </nav>

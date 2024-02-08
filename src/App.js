@@ -10,9 +10,10 @@ import NavBar from './components/layout/navbar';
 import Footer from './components/layout/footer';
 import Projects from './components/pages/Projects';
 import Project from './components/pages/Project';
-import Companies from './components/pages/Companies';
 
 import Login from './components/loginUsuario/Login';
+
+import Categories from './components/pages/Categories';
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
             
             <Route path="/project/:id" element={<Project />} />
 
-            <Route path="/companies" element={<Companies />} />
+            <Route path="/category" element={<Categories />} />
 
           </Routes>
         </Conteiner>
