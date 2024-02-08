@@ -20,6 +20,7 @@ const Projects = () => {
     let type = ''
 
     const {projects} = useSelector(rootReducer=>rootReducer.projectReducer)
+    const {currentUser} = useSelector(rootReducer=>rootReducer.useReducer)
     const dispatch = useDispatch()
 
     if(location.state){
@@ -79,18 +80,44 @@ const Projects = () => {
             )}
 
             <Conteiner customClass="start">
+                {currentUser.adm ? (
+                    <>
+                        {projects.length > 0 && (
+                            projects.map((projeto) => {
+                                return (<ProjectCard
+                                    id={projeto.id}
+                                    name={projeto.name}
+                                    budget={projeto.budget}
+                                    category={projeto.category.name}
+                                    handleRemove={removeProject}
+                                    key={projeto.id}
+                                />)
+                            }))}
+                    </>
+                ) : (
+                        <>
+                            {projects.length > 0 && (
+                                projects.map((projeto) => {
+                                    return (
+                                        <>
+                                            {currentUser.id == projeto.idUser ? (
+                                                <>
+                                                    <ProjectCard
+                                                        id={projeto.id}
+                                                        name={projeto.name}
+                                                        budget={projeto.budget}
+                                                        category={projeto.category.name}
+                                                        handleRemove={removeProject}
+                                                        key={projeto.id}
+                                                    />
+                                                </>
+                                            ) : (<></>)}
 
-                {projects.length>0 && (
-                    projects.map((projeto)=>{
-                        return (<ProjectCard
-                            id={projeto.id}
-                            name={projeto.name}
-                            budget={projeto.budget}
-                            category={projeto.category.name}
-                            handleRemove={removeProject}
-                            key={projeto.id}
-                            />)
-                    }))}
+                                        </>
+                                    )
+                                }))}
+                        </>
+                )}
 
                 {!removeLoading && (
                     <Loading/>
@@ -98,8 +125,7 @@ const Projects = () => {
 
                 {removeLoading && projects.length===0 && (
                     <p>Não há projetos cadastrados!</p>
-                )}              
-
+                )}
             </Conteiner>
 
         </div>
