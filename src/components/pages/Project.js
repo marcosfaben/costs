@@ -1,6 +1,6 @@
 import {parse, v4 as uuid} from 'uuid' 
 
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import styles from './Project.module.css'
 
 //usar o hook useParams para pegar o id passado na url
@@ -10,24 +10,19 @@ import Loading from '../layout/Loading';
 import Conteiner from '../layout/Conteiner';
 import ProjectForm from '../project/ProjectForm';
 import Message from '../layout/Message';
-//import ServiceForm from '../service/ServiceForm';
 import ServiceForm from '../service/ServiceForm'
 import ServiceCard from '../service/ServiceCard';
+import { useDispatch, useSelector } from 'react-redux';
+import rootReducer from '../../redux/root-reducer';
 
 function Project(){
 
     const {id} = useParams()
+    
+    const dispatch = useDispatch()
 
-    const[project, setProject] = useState({})
-
-    const [showProjectForm, setShowProjectForm] = useState(false)
-    const [showServices, setShowServices] = useState(false)
-
-    const [msg, setMsg] = useState('')
-    const [typeMsg, setTypeMsg] = useState('')
-
-    const [services, setServices] = useState([])
-
+    const {project, msg, typeMsg, showProjectForm, showServices, services} = useSelector(rootReducer=>rootReducer.projectReducer)
+    
     useEffect(()=>{
         fetch(`http://localhost:5000/projects/${id}`,{
             method: "GET",
@@ -36,29 +31,20 @@ function Project(){
             }
         }).then((resp)=>resp.json())
         .then((data)=>{
-            setProject(data)
-            setServices(data.services)
+            dispatch({type: 'setProject', payload: data})
+            dispatch({type: 'setServices', payload: data.services})
         })
         .catch((err)=>{
             console.log("Erro ao puxar dados do banco de projetos: " + err)
         })
-    }, [id])
-
-    function toggleProjectForm(){
-        setShowProjectForm(!showProjectForm)
-    }
-
-    function toggleServices(){
-        setShowServices(!showServices)
-    }
-
+    }, [id, project])
 
     function editPost(project){
-        setMsg('')
+        dispatch({type: 'setMsg', payload: ''})
 
         if(project.budget < project.cost){
-            setMsg('O orçamento não pode ser menor que os custos do projeto!')
-            setTypeMsg('error')
+            dispatch({type: 'setMsg', payload: 'O orçamento não pode ser menor que os custos do projeto!'})
+            dispatch({type: 'setTypeMsg', payload: 'error'})
             return false
         }
 
@@ -71,22 +57,21 @@ function Project(){
         })
         .then((resp)=>resp.json())
         .then((data)=>{
-            setProject(data)
-            setShowProjectForm(false)
-            setMsg('Projeto atualizado!')
-            setTypeMsg('sucess')
+            dispatch({action: 'setProject', payload: data})
+            dispatch({type: 'setShowProjectForm'})
+            dispatch({type: 'setMsg', payload: 'Projeto atualizado!'})
+            dispatch({type: 'setTypeMsg', payload: 'sucess'})
         })
         .catch((err)=>{
             console.log('Erro ao atualizar o projeto: ' + err)
-            setMsg('Erro na atualização!')
-            setTypeMsg('error')
+            dispatch({type: 'setMsg', payload: 'Erro na atualização!'})
+            dispatch({type: 'setTypeMsg', payload: 'error'})
         })
-       console.log(project)
     }
 
     function insertServices(project){
-        setMsg('')
-        
+        dispatch({type: 'setMsg', payload: ''})
+
         const lastService = project.services[project.services.length - 1]
         
         lastService.id = uuid()
@@ -94,8 +79,9 @@ function Project(){
         const sumCost = project.services.reduce((a, b)=>a+parseFloat(b.cost), 0)
         
         if(sumCost > parseFloat(project.budget)){
-            setMsg("Orçamento ultrapassado, verifique o valor do serviço")
-            setTypeMsg('error')
+            dispatch({type: 'setMsg', payload: 'Orçamento ultrapassado, verifique o valor do serviço'})
+            dispatch({type: 'setTypeMsg', payload: 'error'})
+
             //esse pop retira o ultimo elemento de serviços
             project.services.pop()
             return false
@@ -110,7 +96,7 @@ function Project(){
             },
             body: JSON.stringify(project)
         }).then((resp)=>resp.json())
-        .then((data)=> setServices(data.services))
+        .then((data)=> dispatch({action: 'setServices', payload: data.service}))
         .catch((err)=>console.log("Erro na atualização dos serviços do projeto" + err))
 
     }
@@ -120,10 +106,9 @@ function Project(){
        let proj = project
 
        proj.services = proj.services.filter((service)=> service.id !== idService)
-
-       //atualizar custo
-       //proj.cost = proj.reduce
-
+       
+       proj.cost = proj.services.reduce((a, b)=>a+parseFloat(b.cost), 0)
+       
        fetch(`http://localhost:5000/projects/${idProject}`,{
             method:"PATCH",
             headers: {
@@ -132,10 +117,12 @@ function Project(){
             body: JSON.stringify(proj)
         }).then((resp)=>resp.json())
         .then((data)=>{
-            setProject(proj)
-            setServices(data.services)
-            setMsg("Serviço excluido com sucesso")
-            setTypeMsg('sucess')
+
+            console.log("entrou em remover")
+            dispatch({action: 'setProject', payload: proj})
+            dispatch({action: 'setServices', payload: data.services})
+            dispatch({type: 'setMsg', payload: 'Serviço excluido com sucesso'})
+            dispatch({type: 'setTypeMsg', payload: 'sucess'})
         })
         .catch((err)=>{
             console.log("Erro ao puxar dados do banco de projetos: " + err)
@@ -144,7 +131,7 @@ function Project(){
 
     return(
         <>
-            {project.name ? (
+            {project ? (
                     <div className={styles.project_details}>
                         <Conteiner customClass="column">
 
@@ -153,14 +140,14 @@ function Project(){
                             )}
 
                             <div className={styles.details_container}>
-                                <h1>Projeto: {project.name}</h1>
-                                <button className={styles.btn} onClick={toggleProjectForm}>
+                            <h1>Projeto: {project.name}</h1>
+                                <button className={styles.btn} onClick={()=>{dispatch({type: 'setShowProjectForm'})}}>
                                     {showProjectForm ? 'Fechar projeto' : 'Editar projeto'}
                                 </button>
                                 {!showProjectForm ? (
                                     <div className={styles.project_info}>
                                         <p>
-                                            <span>Categoria:</span> {project.category.name}
+                                        <span>Categoria:</span> {project.category.name}
                                         </p>
                                         <p>
                                             <span>Total de Orçamento:</span> R${project.budget}
@@ -178,7 +165,7 @@ function Project(){
                             </div>
                             <div className={styles.service_form_container}>
                                     <h2>Adicione um serviço:</h2>
-                                    <button className={styles.btn} onClick={toggleServices}>
+                                    <button className={styles.btn} onClick={()=>{dispatch({type:'setShowServices'})}}>
                                         {showServices ? 'Fechar serviço' : 'Adicionar'}
                                     </button>
                                     <div className={styles.project_info}>
@@ -211,6 +198,7 @@ function Project(){
                                             />
                                     ))
                                 }
+
                             </div>
                         </Conteiner>
                     </div>

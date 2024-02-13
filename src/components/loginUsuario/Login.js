@@ -1,6 +1,6 @@
 import Input from "../form/Input";
 import SubmitButton from "../form/SubmitButton";
-import { useState, useEffect } from "react";
+import { useEffect, useReducer } from "react";
 
 import { useNavigate, useLocation } from "react-router-dom";
 import Message from "../layout/Message";
@@ -9,12 +9,28 @@ import styles from './Login.module.css';
 
 import LinkButton from "../layout/LinkButton";
 
-export default function Login(){
+import { useSelector, useDispatch} from "react-redux";
+import UserActionTypes from "../../redux/user/actionTypes";
+import rootReducer from "../../redux/root-reducer";
 
-    const [empresas, setEmpresas] = useState({})
-    const [login, setLogin] = useState([])
+export default function Login(){
+    const {users} = useSelector(rootReducer=>rootReducer.useReducer)
+
     const navigate = useNavigate();
+
+    const reducer = (state, action) =>{
+        switch(action.type){
+            case 'setLogin':
+                return { ...state, login: action.payload }
+        }
+    }
     
+    const [state, set] = useReducer(reducer, {
+        login: []
+    })
+
+    const dispatch = useDispatch()
+
     let msg = ''
     let type = ''
     const location = useLocation()
@@ -24,7 +40,7 @@ export default function Login(){
     }
 
     useEffect(()=>{
-        fetch("http://localhost:5000/company", {
+        fetch("http://localhost:5000/user", {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,23 +48,29 @@ export default function Login(){
         })
         .then((data) => data.json())
         .then((data) => {
-            setEmpresas(data)
+            dispatch({type: UserActionTypes.USERS, payload: data})
         })
-        .catch(err=> console.log('Erro ao conectar com o banco de dados das empresas: ' + err))
+        .catch(err=> console.log('Erro ao conectar com o banco de dados de usuarios: ' + err))
     }, [])
     
     function handleOnChange(e){
-        setLogin({...login, [e.target.name]: e.target.value})
+        set({type: 'setLogin', payload: {...state.login, [e.target.name]: e.target.value}})
     }
     
-    function buscarEmpresa(e){
+    
+    function buscarUsuario(e){
         var resp = false;
         e.preventDefault();
-        empresas.map((empresa) => {
-            if(empresa.cnpj === login.cnpj && empresa.password === login.password){
+
+
+        users.map((usuario) => {
+            if(usuario.cnpj === state.login.cnpj && usuario.password === state.login.password){
                 resp = true
+                dispatch({type: UserActionTypes.LOGIN, payload: usuario})
             }
+            return resp
         })
+
         if(resp){
             navigate('/home')
         }
@@ -62,12 +84,12 @@ export default function Login(){
                 <Message msg={msg} type={type}/>
             )}
 
-            <form className={styles.login} onSubmit={buscarEmpresa}>
+            <form className={styles.login} onSubmit={buscarUsuario}>
                 <Input
-                    text="Insira o CNPJ da empresa"
+                    text="Insira seu CPF"
                     type="text"
-                    placeholder="Insira o CNPJ"
-                    name="cnpj"
+                    placeholder="Insira o CPF"
+                    name="cpf"
                     handleOnChange={handleOnChange}
                 />
                 <Input
