@@ -6,6 +6,13 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
 
+const mongoose = require('mongoose')
+
+const url = 'mongodb://localhost:27017/costs'
+mongoose.connect(url).then((db) => {
+    console.log("Connected corrotly to server")
+}).catch((err) => { console.log(err) })
+
 var app = express();
 
 app.use(logger('dev'));
