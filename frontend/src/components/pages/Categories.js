@@ -16,6 +16,8 @@ const Categories = () => {
     //const [showCategoryForm, setCategoryForm] = useState(false)
     const [category, setCategory] = useState(null)
 
+    const [cont, setCont] = useState(0)
+
     const {categories, showForm} = useSelector(rootReducer=>rootReducer.categoryReducer)
     const dispatch = useDispatch()
 
@@ -29,13 +31,15 @@ const Categories = () => {
             headers: {'Content-Type': 'application/json'}
         }).then((resp)=>resp.json()
         ).then((data)=>dispatch({type: categoryActionTypes.INSERT, payload: data}))
-    }, [categories])
+    }, [cont])
 
     function postCategory(){
         fetch('http://localhost:5000/categories',{
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(category)
+        }).then(()=>{
+            setCont((cont) => cont + 1)
         }).catch((err)=>console.log("Erro ao conectar com categorias: " + err))  
     }
 
@@ -48,6 +52,7 @@ const Categories = () => {
             }
         }).then((resp)=>resp.json())
         .then((data)=>{
+            setCont((cont) => cont + 1)
             dispatch({type: "setMsg", payload: "Serviço excluido com sucesso"})
             dispatch({type: "setTypeMsg", payload: "sucess"})
         })
@@ -93,10 +98,10 @@ const Categories = () => {
                                     <Conteiner customClass="row">
                                     {categories.map((category) => (
                                         <CategoryCard
-                                            idCategory={category.id}
+                                            idCategory={category._id}
                                             name={category.name}
                                             handleRemove={handleRemoveCategory}
-                                            key={category.id}
+                                            key={category._id}
                                         />
                                     ))}
                                     </Conteiner>

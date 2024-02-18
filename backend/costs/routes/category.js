@@ -14,5 +14,27 @@ router.route('/')
     }, (err) => next(err))
     .catch((err) => next(err))
 })
+.post(cors.corsWithOptions, (req, res, next) => {
+    Categories.create(req.body)
+    .then((category) => {
+        console.log('Category Created')
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.json(category)
+    }, (err) => next(err)).catch((err) => next(err))
+})
+
+router.route('/:id')
+.options(cors.corsWithOptions, (req, res) => {res.sendSatus(200)})
+.delete(cors.corsWithOptions, (req, res, next) => {
+    Categories.findByIdAndDelete(req.params.id)
+    .then((category) => {
+        console.log('Category Deleted')
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.json(category)
+      }, (err) => next(err))
+      .catch((err) => next(err))
+})
 
 module.exports = router
