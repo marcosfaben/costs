@@ -1,6 +1,6 @@
 import {parse, v4 as uuid} from 'uuid' 
 
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import styles from './Project.module.css'
 
 //usar o hook useParams para pegar o id passado na url
@@ -14,6 +14,7 @@ import ServiceForm from '../service/ServiceForm'
 import ServiceCard from '../service/ServiceCard';
 import { useDispatch, useSelector } from 'react-redux';
 import rootReducer from '../../redux/root-reducer';
+import projectActionTypes from '../../redux/project/actionTypes';
 
 function Project(){
 
@@ -23,6 +24,7 @@ function Project(){
 
     const {project, msg, typeMsg, showProjectForm, showServices, services} = useSelector(rootReducer=>rootReducer.projectReducer)
     
+    const [cont, setCont] = useState(0)
     useEffect(()=>{
         fetch(`http://localhost:5000/projects/${id}`,{
             method: "GET",
@@ -32,12 +34,12 @@ function Project(){
         }).then((resp)=>resp.json())
         .then((data)=>{
             dispatch({type: 'setProject', payload: data})
-            dispatch({type: 'setServices', payload: data.services})
+            dispatch({type: projectActionTypes.EDIT, payload: data.services})
         })
         .catch((err)=>{
             console.log("Erro ao puxar dados do banco de projetos: " + err)
         })
-    }, [id, project])
+    }, [id, cont])
 
     function editPost(project){
         dispatch({type: 'setMsg', payload: ''})
@@ -49,7 +51,7 @@ function Project(){
         }
 
         fetch(`http://localhost:5000/projects/${project.id}`,{
-            method: "PATCH",
+            method: "PUT",
             headers: {
                 'Content-type': 'application/json'
             },
@@ -57,7 +59,8 @@ function Project(){
         })
         .then((resp)=>resp.json())
         .then((data)=>{
-            dispatch({action: 'setProject', payload: data})
+            setCont((cont)=>cont+1)
+            dispatch({action: projectActionTypes.EDIT, payload: data})
             dispatch({type: 'setShowProjectForm'})
             dispatch({type: 'setMsg', payload: 'Projeto atualizado!'})
             dispatch({type: 'setTypeMsg', payload: 'sucess'})
@@ -90,13 +93,14 @@ function Project(){
         project.cost = sumCost
 
         fetch(`http://localhost:5000/projects/${id}`,{
-            method:"PATCH",
+            method:"PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(project)
         }).then((resp)=>resp.json())
-        .then((data)=> dispatch({action: 'setServices', payload: data.service}))
+        .then((data)=> {
+            dispatch({action: projectActionTypes.EDIT, payload: data.services})})
         .catch((err)=>console.log("Erro na atualização dos serviços do projeto" + err))
 
     }
@@ -110,22 +114,21 @@ function Project(){
        proj.cost = proj.services.reduce((a, b)=>a+parseFloat(b.cost), 0)
        
        fetch(`http://localhost:5000/projects/${idProject}`,{
-            method:"PATCH",
+            method:"PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(proj)
         }).then((resp)=>resp.json())
         .then((data)=>{
-
-            console.log("entrou em remover")
-            dispatch({action: 'setProject', payload: proj})
+            setCont((cont)=>cont+1)
+            dispatch({action: projectActionTypes.EDIT, payload: proj})
             dispatch({action: 'setServices', payload: data.services})
             dispatch({type: 'setMsg', payload: 'Serviço excluido com sucesso'})
             dispatch({type: 'setTypeMsg', payload: 'sucess'})
         })
         .catch((err)=>{
-            console.log("Erro ao puxar dados do banco de projetos: " + err)
+            console.log("Erro ao remover dados do banco de projetos: " + err)
         })
     }
 

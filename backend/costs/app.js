@@ -5,6 +5,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user');
+var projectRouter = require('./routes/project');
+var categoryRouter = require('./routes/category');
 
 const mongoose = require('mongoose')
 
@@ -23,7 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/user', userRouter);
-
+app.use('/projects', projectRouter);
+app.use('/categories', categoryRouter);
 
 
 module.exports = app;

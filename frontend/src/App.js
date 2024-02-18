@@ -34,7 +34,7 @@ function App() {
             <Route path="/newproject" element={<NewProject/>}/>
             <Route path="/cadastro" element={<Cadastro/>}/>
             
-            <Route path="/project/:id" element={<Project />} />
+            <Route path="/projects/:id" element={<Project />} />
 
             <Route path="/category" element={<Categories />} />
             <Route path="/users" element={<Users />} />

@@ -10,7 +10,6 @@ import ProjectCard from "../project/ProjectCard";
 import Loading from '../layout/Loading'
 
 import { useSelector, useDispatch } from "react-redux";
-import rootReducer from "../../redux/root-reducer";
 import projectActionTypes from "../../redux/project/actionTypes";
 
 const Projects = () => {
@@ -22,6 +21,10 @@ const Projects = () => {
     const {projects} = useSelector(rootReducer=>rootReducer.projectReducer)
     const {currentUser} = useSelector(rootReducer=>rootReducer.useReducer)
     const dispatch = useDispatch()
+
+    const [msgRemove, setMsgRemove] = useState('')
+    const [typeRemove, setTypeRemove] = useState('')
+    const [cont, setCont] = useState(0)
 
     if(location.state){
         message = location.state.message
@@ -41,10 +44,9 @@ const Projects = () => {
             setRemoveLoading(true)
         })
         .catch((err)=>console.log("Erro ao conectar com o banco de dados: " + err))  
-    }, [])
+    }, [cont])
 
-    const [msgRemove, setMsgRemove] = useState('')
-    const [typeRemove, setTypeRemove] = useState('')
+    
    
     function removeProject(id){
         fetch(`http://localhost:5000/projects/${id}`, {
@@ -57,6 +59,7 @@ const Projects = () => {
             dispatch({type: projectActionTypes.DELET, payload: id})
             setMsgRemove('Projeto removido com sucesso!')
             setTypeRemove('sucess')
+            setCont((cont)=> cont+1)
         })
         .catch((err) => console.log("Erro ao tentar remover projeto: "+err))
     }
@@ -85,12 +88,12 @@ const Projects = () => {
                         {projects.length > 0 && (
                             projects.map((projeto) => {
                                 return (<ProjectCard
-                                    id={projeto.id}
+                                    id={projeto._id}
                                     name={projeto.name}
                                     budget={projeto.budget}
                                     category={projeto.category.name}
                                     handleRemove={removeProject}
-                                    key={projeto.id}
+                                    key={projeto._id}
                                 />)
                             }))}
                     </>
@@ -100,18 +103,16 @@ const Projects = () => {
                                 projects.map((projeto) => {
                                     return (
                                         <>
-                                            {currentUser.id == projeto.idUser ? (
-                                                <>
+                                            {currentUser._id === projeto.idUser && (
                                                     <ProjectCard
-                                                        id={projeto.id}
+                                                        id={projeto._id}
                                                         name={projeto.name}
                                                         budget={projeto.budget}
                                                         category={projeto.category.name}
                                                         handleRemove={removeProject}
-                                                        key={projeto.id}
+                                                        key={projeto._id}
                                                     />
-                                                </>
-                                            ) : (<></>)}
+                                            )}
 
                                         </>
                                     )

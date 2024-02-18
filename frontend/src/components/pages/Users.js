@@ -60,7 +60,7 @@ function Users(){
                                             idUser={user.id}
                                             name={user.name}
                                             handleRemove={handleRemoveUser}
-                                            key={user.id}
+                                            key={user._id}
                                         />
                                     ))}
                                     </Conteiner>

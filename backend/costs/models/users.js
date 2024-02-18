@@ -21,11 +21,9 @@ const usersSchema = new Schema({
     adm: {
         type: Boolean,
         required: true
-    },
-    id: {
-        type: mongoose.Schema.Types.ObjectId
     }
 })
+
 
 const Users = mongoose.model('User', usersSchema)
 

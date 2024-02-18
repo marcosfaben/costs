@@ -15,7 +15,7 @@ router.route('/')
   }, (err) => next(err))
   .catch((err) => next(err))
 })
-.post(cors.corsWithOptions, (req, res) => {
+.post(cors.corsWithOptions, (req, res, next) => {
 
   Users.create(req.body)
   .then((user) => {
